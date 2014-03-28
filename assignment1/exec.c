@@ -13,17 +13,20 @@ int
 exec(char *path, char **argv)
 {
   char *s, *last;
-  int i, off,j = 0;
+  int i, off;
+  int j = 0;
   uint argc, sz, sp, ustack[3+MAXARG+1];
   struct elfhdr elf;
   struct inode *ip;
   struct proghdr ph;
   pde_t *pgdir, *oldpgdir;
   path_num = 1;
+  strncpy(path_set[0],"\:",4);
+  cprintf("%d",ip = namei(path_set[0]));
   if((ip = namei(path)) == 0){
-    while(j < path_num && ( (ip = namei(path) ) == 0) ) 
-    j++; 
-    if(j>path_num)
+    while(j < path_num &&  (ip = namei(path_set[j]))  == 0) 
+      j++; 
+    if(j>=path_num)
       return -1;
     }
   ilock(ip);
