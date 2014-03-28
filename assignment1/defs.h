@@ -22,7 +22,8 @@ void            panic(char*) __attribute__((noreturn));
 
 // exec.c
 int             exec(char*, char**);
-
+extern char   path_set[10][128];
+extern int path_num;
 // file.c
 struct file*    filealloc(void);
 void            fileclose(struct file*);

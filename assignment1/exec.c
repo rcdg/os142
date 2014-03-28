@@ -6,20 +6,26 @@
 #include "defs.h"
 #include "x86.h"
 #include "elf.h"
-
+#include "defs.h"
+char path_set[10][128];
+int path_num;
 int
 exec(char *path, char **argv)
 {
   char *s, *last;
-  int i, off;
+  int i, off,j = 0;
   uint argc, sz, sp, ustack[3+MAXARG+1];
   struct elfhdr elf;
   struct inode *ip;
   struct proghdr ph;
   pde_t *pgdir, *oldpgdir;
-
-  if((ip = namei(path)) == 0)
-    return -1;
+  path_num = 1;
+  if((ip = namei(path)) == 0){
+    while(j < path_num && ( (ip = namei(path) ) == 0) ) 
+    j++; 
+    if(j>path_num)
+      return -1;
+    }
   ilock(ip);
   pgdir = 0;
 
